@@ -1,0 +1,8 @@
+.dashbaord-container {
+    width: 100%;
+    display: flex;
+}
+
+.dashboard-box-container {
+    height: 50svh;
+}

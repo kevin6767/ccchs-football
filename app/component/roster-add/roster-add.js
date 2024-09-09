@@ -1,23 +1,19 @@
 'use client'
-
 import { TextField, Box, Button } from '@mui/material'
-import './roster-actions/styles/styles.css'
+import './styles/styles.css'
 import { useState } from 'react'
+import { createPlayer } from '@/app/actions/roster-actions/roster-add'
 
-export const RosterActions = () => {
+export const RosterAdd = () => {
     const [player, setPlayer] = useState({})
+    const [resp, setResp] = useState()
 
-    const handleOnSubmit = (e) => {
+    const handleOnSubmit = async (e) => {
         e.preventDefault()
         console.log(player)
 
-        fetch('http://localhost:3000/api/roster/', {
-            method: 'POST',
-            body: JSON.stringify(player),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        const response = await createPlayer(player)
+        setResp(response)
     }
 
     const handleOnChange = (e) => {
@@ -33,13 +29,12 @@ export const RosterActions = () => {
 
 
 
-    return (
-        <Box 
+    return <Box 
         component='div'
         noValidate
         sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }}
         className='form-container'>
-        <form onSubmit={handleOnSubmit}>
+        {!resp ? <form onSubmit={handleOnSubmit}>
         <Box component='div'>
         <TextField
           required
@@ -74,8 +69,8 @@ export const RosterActions = () => {
             Submit
         </Button>
         </Box>
-        </form>
+        </form> : resp.message}
 
         </Box>
-    )
+    
 }
