@@ -1,7 +1,7 @@
 'use client'
 import { TextField, Box, Button } from '@mui/material'
 import './styles/styles.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createPlayer } from '@/app/actions/roster-actions/roster-add'
 
 export const RosterAdd = ({handleClose}) => {
