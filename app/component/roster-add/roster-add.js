@@ -4,16 +4,21 @@ import './styles/styles.css'
 import { useState } from 'react'
 import { createPlayer } from '@/app/actions/roster-actions/roster-add'
 
-export const RosterAdd = () => {
+export const RosterAdd = ({handleClose}) => {
     const [player, setPlayer] = useState({})
     const [resp, setResp] = useState()
 
     const handleOnSubmit = async (e) => {
         e.preventDefault()
         console.log(player)
-
+        
         const response = await createPlayer(player)
-        setResp(response)
+        if (!handleClose) () => { 
+            setResp(response)
+            return
+        }
+        handleClose()
+        return 
     }
 
     const handleOnChange = (e) => {

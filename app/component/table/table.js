@@ -10,24 +10,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Button, Box, TableSortLabel } from '@mui/material';
 import { useState } from 'react';
+import { TransitionsModal } from '../modal/modal';
 
-function createData(first_name, last_name, number, position, squat_max, bench_max, powerclean_max, deadlift_max, weight) {
-  return { first_name, last_name, number, position, squat_max, bench_max, powerclean_max, deadlift_max, weight };
-}
-
-const rows = [
-    createData('Kevin', 'Eslick', 11, 'Tackle', 300, 250, 150, 150, 300),
-    createData('John', 'Doe', 22, 'Quarterback', 250, 200, 180, 220, 210),
-    createData('Michael', 'Johnson', 33, 'Running Back', 280, 220, 170, 210, 190),
-    createData('Tom', 'Williams', 44, 'Wide Receiver', 260, 210, 160, 200, 180),
-    createData('Chris', 'Smith', 55, 'Linebacker', 320, 270, 190, 230, 260),
-    createData('Andrew', 'Brown', 66, 'Defensive End', 310, 265, 180, 225, 240),
-    createData('Brian', 'Jones', 77, 'Cornerback', 230, 185, 150, 170, 160),
-    createData('David', 'Miller', 88, 'Safety', 270, 215, 160, 210, 200),
-    createData('James', 'Davis', 99, 'Tight End', 290, 245, 170, 220, 230),
-    createData('Ryan', 'Moore', 12, 'Guard', 330, 280, 200, 250, 290),
-  ];
-  
 
 // Comparator function for sorting
 function descendingComparator(a, b, orderBy) {
@@ -46,19 +30,22 @@ function getComparator(order, orderBy) {
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
+// function stableSort(array, comparator) {
+//   const stabilizedThis = array.map((el, index) => [el, index]);
+//   stabilizedThis.sort((a, b) => {
+//     const order = comparator(a[0], b[0]);
+//     if (order !== 0) return order;
+//     return a[1] - b[1];
+//   });
+//   return stabilizedThis.map((el) => el[0]);
+// }
 
-export const BasicTable = () => {
+export const BasicTable = (rows) => {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('first_name');
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -66,10 +53,13 @@ export const BasicTable = () => {
     setOrderBy(property);
   };
 
+  console.log(rows)
+
   return (
+    <>
     <TableContainer component={Paper} elevation={5}>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Button sx={{ padding: '10px' }}>Add New Player</Button>
+        <Button sx={{ padding: '10px' }} onClick={handleOpen}>Add New Player</Button>
       </Box>
       <Table sx={{ minWidth: 1300 }}>
         <TableHead>
@@ -150,8 +140,8 @@ export const BasicTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {stableSort(rows, getComparator(order, orderBy)).map((row) => (
-            <TableRow key={row.first_name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+          {rows.row.map((row) => (
+            <TableRow key={row._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell component="th" scope="row">
                 {row.first_name}
               </TableCell>
@@ -168,5 +158,9 @@ export const BasicTable = () => {
         </TableBody>
       </Table>
     </TableContainer>
+    <TransitionsModal {...{
+        open, handleClose
+    }}/>
+    </>
   );
 };
