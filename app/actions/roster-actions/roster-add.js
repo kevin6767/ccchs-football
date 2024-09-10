@@ -5,6 +5,7 @@ import { redirect } from "next/dist/server/api-utils"
 
 
 export async function createPlayer(player) {
+    // TODO: better error handling
     try {
        const response = await fetch('http://localhost:3000/api/roster/', {
             method: 'POST',

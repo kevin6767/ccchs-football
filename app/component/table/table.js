@@ -55,6 +55,7 @@ export const BasicTable = (rows) => {
   };
 
   const handleDelete = async (row) => {
+    // TODO: do error handling
     const deleteResp = await deletePlayer(row._id)
     console.log(deleteResp)
   }

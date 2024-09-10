@@ -1,9 +1,11 @@
 import connect from '../../../lib/mongodb'
+import { revalidatePath } from "next/cache"
 
 export async function GET(request) {
     const client = await connect
     const cursor = await client.db('ccchs-cubs').collection('roster').find()
     const greetings = await cursor.toArray()
+    revalidatePath('/roster')
     return Response.json(greetings)
 }
 
