@@ -11,6 +11,7 @@ import Paper from '@mui/material/Paper';
 import { Button, Box, TableSortLabel } from '@mui/material';
 import { useState } from 'react';
 import { TransitionsModal } from '../modal/modal';
+import { deletePlayer } from '@/app/actions/roster-delete/roster-delete';
 
 
 // Comparator function for sorting
@@ -53,7 +54,11 @@ export const BasicTable = (rows) => {
     setOrderBy(property);
   };
 
-  console.log(rows)
+  const handleDelete = async (row) => {
+    const deleteResp = await deletePlayer(row._id)
+    console.log(deleteResp)
+  }
+  
 
   return (
     <>
@@ -137,6 +142,7 @@ export const BasicTable = (rows) => {
                 Weight
               </TableSortLabel>
             </TableCell>
+            <TableCell />
           </TableRow>
         </TableHead>
         <TableBody>
@@ -153,6 +159,7 @@ export const BasicTable = (rows) => {
               <TableCell>{row.powerclean_max}</TableCell>
               <TableCell>{row.deadlift_max}</TableCell>
               <TableCell>{row.weight}</TableCell>
+              <TableCell><Button onClick={() => handleDelete(row)}>Delete</Button></TableCell>
             </TableRow>
           ))}
         </TableBody>

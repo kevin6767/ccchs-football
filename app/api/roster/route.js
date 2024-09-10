@@ -13,3 +13,10 @@ export async function POST(request){
   await client.db("ccchs-cubs").collection("roster").insertOne(body);
   return Response.json({message: "successfully updated the document"})
 }
+
+export async function  DELETE (request) {
+  const client = await connect
+  const body = await request.json()
+  await client.db("ccchs-cubs").collection("roster").deleteOne(body._id)
+  return Response.json({message: "successfully updated the document"})
+}
