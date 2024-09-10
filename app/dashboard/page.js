@@ -1,4 +1,4 @@
-import { RosterAdd } from '../component/roster-add/roster-add'
+import { RosterAdd } from '../component/roster-add-or-update/roster-add-or-update'
 import { TextField, Box, Button } from '@mui/material'
 import './styles/style.css'
 import { revalidatePath } from "next/cache"

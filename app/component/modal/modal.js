@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { RosterAdd } from '../roster-add/roster-add';
+import { RosterAddorUpdate } from '../roster-add-or-update/roster-add-or-update';
 
 const style = {
   position: 'absolute',
@@ -19,7 +19,7 @@ const style = {
   p: 4,
 };
 
-export const TransitionsModal = ({open, handleClose}) => {
+export const TransitionsModal = ({open, handleClose, updatedPlayer, handleUpdate, setUpdatedPlayer, handleUpdateSubmit, update}) => {
   return (
     <div>
       <Modal
@@ -37,7 +37,7 @@ export const TransitionsModal = ({open, handleClose}) => {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <RosterAdd handleClose={handleClose}/>
+            <RosterAddorUpdate update={update} handleUpdateSubmit={handleUpdateSubmit} handleClose={handleClose} updatedPlayer={updatedPlayer} handleUpdate={handleUpdate} setUpdatedPlayer={setUpdatedPlayer} />
           </Box>
         </Fade>
       </Modal>

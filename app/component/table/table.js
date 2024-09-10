@@ -11,7 +11,8 @@ import Paper from '@mui/material/Paper';
 import { Button, Box, TableSortLabel } from '@mui/material';
 import { useState } from 'react';
 import { TransitionsModal } from '../modal/modal';
-import { deletePlayer } from '@/app/actions/roster-delete/roster-delete';
+import { deletePlayer } from '@/app/actions/roster-actions/roster-delete/roster-delete';
+import { updatePlayer } from '@/app/actions/roster-actions/roster-update/roster-update';
 
 
 // Comparator function for sorting
@@ -44,6 +45,8 @@ function getComparator(order, orderBy) {
 export const BasicTable = (rows) => {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('first_name');
+  const [updatedPlayer, setUpdatedPlayer] = useState(undefined)
+  const [update, setUpdateMode] = useState(false)
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -58,6 +61,20 @@ export const BasicTable = (rows) => {
     // TODO: do error handling
     const deleteResp = await deletePlayer(row._id)
     console.log(deleteResp)
+  }
+
+  const handleUpdate = async (row) => {
+    console.log(row)
+    setUpdatedPlayer(row)
+    setOpen(true)
+    setUpdateMode(true)
+  }
+
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault()
+    console.log(updatedPlayer)
+    const updateResp = await updatePlayer(updatedPlayer)
+    handleClose()
   }
   
 
@@ -144,6 +161,7 @@ export const BasicTable = (rows) => {
               </TableSortLabel>
             </TableCell>
             <TableCell />
+            <TableCell />
           </TableRow>
         </TableHead>
         <TableBody>
@@ -161,13 +179,14 @@ export const BasicTable = (rows) => {
               <TableCell>{row.deadlift_max}</TableCell>
               <TableCell>{row.weight}</TableCell>
               <TableCell><Button onClick={() => handleDelete(row)}>Delete</Button></TableCell>
+              <TableCell><Button onClick={() => handleUpdate(row)}>Update</Button></TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
-    <TransitionsModal {...{
-        open, handleClose
+    <TransitionsModal update={update} handleUpdateSubmit={handleUpdateSubmit} setUpdatedPlayer={setUpdatedPlayer} handleUpdate={handleUpdate} updatedPlayer={updatedPlayer} {...{
+        open, handleClose, 
     }}/>
     </>
   );

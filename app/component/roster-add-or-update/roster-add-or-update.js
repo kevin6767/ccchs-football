@@ -2,11 +2,12 @@
 import { TextField, Box, Button } from '@mui/material'
 import './styles/styles.css'
 import { useEffect, useState } from 'react'
-import { createPlayer } from '@/app/actions/roster-actions/roster-add'
+import { createPlayer } from '@/app/actions/roster-actions/roster-add/roster-add'
 
-export const RosterAdd = ({handleClose}) => {
+export const RosterAddorUpdate = ({handleClose, updatedPlayer, handleUpdate, setUpdatedPlayer, handleUpdateSubmit, update}) => {
     const [player, setPlayer] = useState({})
     const [resp, setResp] = useState()
+  
 
     const handleOnSubmit = async (e) => {
         e.preventDefault()
@@ -24,36 +25,41 @@ export const RosterAdd = ({handleClose}) => {
     const handleOnChange = (e) => {
         const {name, value} = e.target
 
-        setPlayer({
+        !update ? setPlayer({
             ...player,
             [name]: value
-        })
+        }) : setUpdatedPlayer({
+          ...updatedPlayer,
+          [name]: value
+      })
     }
 
     
 
-
+    console.log(updatedPlayer)
 
     return <Box 
         component='div'
         noValidate
         sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }}
         className='form-container'>
-        {!resp ? <form onSubmit={handleOnSubmit}>
+        {!resp ? <form onSubmit={!update ? handleOnSubmit : handleUpdateSubmit}>
         <Box component='div'>
         <TextField
           required
           id="outlined-required"
           label="First Name"
           name="first_name"
+          defaultValue={updatedPlayer?.first_name ||''}
           onChange={handleOnChange}
         />
         <TextField
           required
           id="outlined-required"
           label="last Name"
+          defaultValue={updatedPlayer?.last_name || ''}
           onChange={handleOnChange}
-            name="Last_name"
+            name="last_name"
         />
         <TextField
           required
@@ -61,6 +67,7 @@ export const RosterAdd = ({handleClose}) => {
           label="Number"
           name="number"
           type="number"
+          defaultValue={updatedPlayer?.number || ''}
           onChange={handleOnChange}
         />
         <TextField
@@ -68,10 +75,11 @@ export const RosterAdd = ({handleClose}) => {
           id="outlined-required"
           label="Position"
           name="position"
+          defaultValue={updatedPlayer?.position || ''}
           onChange={handleOnChange}
         />
         <Button type="submit">
-            Submit
+            {update ? 'Update' : 'Submit'}
         </Button>
         </Box>
         </form> : resp.message}
