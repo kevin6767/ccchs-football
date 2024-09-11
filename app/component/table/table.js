@@ -48,7 +48,11 @@ export const BasicTable = (rows) => {
   const [updatedPlayer, setUpdatedPlayer] = useState(undefined)
   const [update, setUpdateMode] = useState(false)
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    setOpen(true)
+    setUpdatedPlayer(undefined)
+    setUpdateMode(false)
+};
   const handleClose = () => setOpen(false);
 
   const handleRequestSort = (property) => {
@@ -75,6 +79,7 @@ export const BasicTable = (rows) => {
     console.log(updatedPlayer)
     const updateResp = await updatePlayer(updatedPlayer)
     handleClose()
+    setUpdatedPlayer(undefined)
   }
   
 
@@ -166,7 +171,7 @@ export const BasicTable = (rows) => {
         </TableHead>
         <TableBody>
           {rows.row.map((row) => (
-            <TableRow key={row._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            <TableRow key={row.rosterId} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell component="th" scope="row">
                 {row.first_name}
               </TableCell>

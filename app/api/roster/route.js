@@ -1,6 +1,7 @@
 import connect from '../../../lib/mongodb'
 import { revalidatePath } from "next/cache"
 import { ObjectId } from 'mongodb'
+import { v4 as uuidv4 } from 'uuid'
 
 export async function GET(request) {
     const client = await connect
@@ -31,6 +32,7 @@ export async function PUT(request) {
 
   // Remove _id from body to prevent it from being updated
   delete body._id;
+
 
   try {
     const result = await client.db("ccchs-cubs").collection("roster").updateOne(
