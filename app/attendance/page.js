@@ -1,8 +1,9 @@
 import { RosterAdd } from '../components/roster-add-or-update/roster-add-or-update'
 import { TextField, Box, Button } from '@mui/material'
-import './styles/style.css'
 import { revalidatePath } from "next/cache"
 import { BasicTable } from '../components/table/table'
+import { AttendanceTable } from './_components/attendanceTable'
+import './styles/style.css'
 
 
 export const revalidate = 2
@@ -13,9 +14,7 @@ export default async function Page() {
     let roster = await data.json()
 
 
-    return <div className='dashboard-container'>
-            <Box component='div' className='dashboard-box-container'>
-                <BasicTable row={roster} />
-            </Box>
-        </div>
+    return <div className='attendance-container'>
+        <AttendanceTable />
+    </div>
 }

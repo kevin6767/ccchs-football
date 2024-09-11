@@ -3,7 +3,8 @@ import './styles/style.css'
 
 export const NAV_LINKS = {
     dashboard: '/dashboard',
-    home: '/'
+    home: '/',
+    attendance: '/attendance'
 }
 
 
@@ -15,7 +16,7 @@ export const Navbar = () => {
         <div className="nav-links">
             <Link href={NAV_LINKS.dashboard}>Dashboard</Link>
             <Link href="_blank">Schedule</Link>
-            <Link href="_blank">Attendance</Link>
+            <Link href={NAV_LINKS.attendance}>Attendance</Link>
             <Link href="_blank">Login</Link>
         </div>
     </header>)

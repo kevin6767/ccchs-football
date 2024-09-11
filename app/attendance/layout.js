@@ -7,7 +7,6 @@ export default function DashboardLayout({
       <div className={styles.page}>
         {/* Include shared UI here e.g. a header or sidebar */}
         <Navbar />
-   
         {children}
       </div>
     )
