@@ -7,7 +7,7 @@ const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export async function deletePlayer(player) {
     try {
-       const response = await fetch(`http://${apiBaseUrlapiBaseUrl}/api/roster/`, {
+       const response = await fetch(`http://${apiBaseUrl}/api/roster/`, {
             method: 'DELETE',
             body: JSON.stringify(player),
             headers: {

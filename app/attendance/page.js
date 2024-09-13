@@ -5,12 +5,13 @@ import { BasicTable } from '../components/table/table'
 import { AttendanceTable } from './_components/attendanceTable'
 import './styles/style.css'
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export const revalidate = 2
 //TODO: when refreshing after deleting, doesn't give correct roster amount
 export default async function Page() {
     // TODO: Error handling
-    let data = await fetch('http://localhost:3000/api/roster/')
+    let data = await fetch(`${apiBaseUrl}/api/roster/`)
     let roster = await data.json()
 
 
