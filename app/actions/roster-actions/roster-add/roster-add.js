@@ -12,7 +12,7 @@ export async function createPlayer(player) {
     console.log(id)
     player['rosterId'] = id
     try {
-       const response = await fetch(`http://${apiBaseUrl}/api/roster/`, {
+       const response = await fetch(`${apiBaseUrl}/api/roster/`, {
             method: 'POST',
             body: JSON.stringify(player),
             headers: {
