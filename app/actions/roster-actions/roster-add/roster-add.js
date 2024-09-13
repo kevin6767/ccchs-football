@@ -4,13 +4,15 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/dist/server/api-utils"
 import { v4 as uuidv4 } from 'uuid'
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+
 export async function createPlayer(player) {
     // TODO: better error handling
     const id = uuidv4()
     console.log(id)
     player['rosterId'] = id
     try {
-       const response = await fetch('http://localhost:3000/api/roster/', {
+       const response = await fetch(`http://${apiBaseUrl}/api/roster/`, {
             method: 'POST',
             body: JSON.stringify(player),
             headers: {

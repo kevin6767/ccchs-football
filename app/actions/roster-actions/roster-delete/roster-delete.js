@@ -3,10 +3,11 @@
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/dist/server/api-utils"
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export async function deletePlayer(player) {
     try {
-       const response = await fetch('http://localhost:3000/api/roster/', {
+       const response = await fetch(`http://${apiBaseUrlapiBaseUrl}/api/roster/`, {
             method: 'DELETE',
             body: JSON.stringify(player),
             headers: {

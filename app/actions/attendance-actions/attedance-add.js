@@ -4,9 +4,10 @@ import { revalidatePath } from "next/cache"
 import { redirect } from "next/dist/server/api-utils"
 import { v4 as uuidv4 } from 'uuid'
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 export async function createAttedanceRecord(player) {
     try {
-       const response = await fetch('http://localhost:3000/api/attendance/', {
+       const response = await fetch(`http://${apiBaseUrl}/api/attendance/`, {
             method: 'POST',
             body: JSON.stringify(player),
             headers: {

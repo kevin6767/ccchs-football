@@ -26,13 +26,14 @@ export const AttendanceTable = ({ roster }) => {
   // Get number of days for the selected month
   const daysInMonth = getDaysInMonth(selectedMonth);
 
-  const handleAttedanceCapture = (event, dayInMonth, player) => {
+  const handleAttedanceCapture = async (event, dayInMonth, player) => {
     const payload = {
         day: dayInMonth + 1, 
         month: selectedMonth,
         rosterId: player.rosterId,
         present: event.target.checked
     }
+    const attedanceUpdate = await atte
   }
 
   return (
