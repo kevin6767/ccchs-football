@@ -15,7 +15,7 @@ export async function POST(request){
   const client = await connect
   const body = await request.json()
   await client.db("ccchs-cubs").collection("roster").insertOne(body);
-  return Response.json({message: "successfully updated the document"})
+  return Response.json({message: "successfully updated the document", body:body})
 }
 
 export async function  DELETE (request) {

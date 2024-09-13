@@ -3,6 +3,8 @@ import { TextField, Box, Button } from '@mui/material'
 import './styles/styles.css'
 import { useEffect, useState } from 'react'
 import { createPlayer } from '@/app/actions/roster-actions/roster-add/roster-add'
+import { createAttedanceRecord } from '@/app/actions/attendance-actions/attedance-add'
+import { generateWorkingDaysForYear } from '@/app/utils/generateWorkingDaysForYear'
 
 export const RosterAddorUpdate = ({handleClose, updatedPlayer, handleUpdate, setUpdatedPlayer, handleUpdateSubmit, update}) => {
     const [player, setPlayer] = useState({})
@@ -11,9 +13,11 @@ export const RosterAddorUpdate = ({handleClose, updatedPlayer, handleUpdate, set
 
     const handleOnSubmit = async (e) => {
         e.preventDefault()
-        console.log(player)
         
-        const response = await createPlayer(player)
+        const response = await createPlayer(player).then(async resp => {
+          const attendanceRecord = generateWorkingDaysForYear(resp.player.body.rosterId)
+          await createAttedanceRecord({attendanceRecord})
+        })
         if (!handleClose) () => { 
             setResp(response)
             return
@@ -33,10 +37,6 @@ export const RosterAddorUpdate = ({handleClose, updatedPlayer, handleUpdate, set
           [name]: value
       })
     }
-
-    
-
-    console.log(updatedPlayer)
 
     return <Box 
         component='div'

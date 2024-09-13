@@ -15,6 +15,6 @@ export default async function Page() {
 
 
     return <div className='attendance-container'>
-        <AttendanceTable />
+        <AttendanceTable roster ={roster} />
     </div>
 }
