@@ -13,6 +13,7 @@ import { useState } from 'react';
 import { TransitionsModal } from '../modal/modal';
 import { deletePlayer } from '@/app/actions/roster-actions/roster-delete/roster-delete';
 import { updatePlayer } from '@/app/actions/roster-actions/roster-update/roster-update';
+import { deleteAttendanceRecord } from '@/app/actions/attendance-actions/attendance-delete/attendance-delete';
 
 
 // Comparator function for sorting
@@ -63,8 +64,9 @@ export const BasicTable = (rows) => {
 
   const handleDelete = async (row) => {
     // TODO: do error handling
-    const deleteResp = await deletePlayer(row._id)
+    const deleteResp = await deletePlayer(row.rosterId)
     console.log(deleteResp)
+    const deleteAttendance = await deleteAttendanceRecord(row.rosterId)
   }
 
   const handleUpdate = async (row) => {

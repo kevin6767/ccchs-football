@@ -27,6 +27,7 @@ export const AttendanceTable = ({ roster, attendance }) => {
   const daysInMonth = getDaysInMonth(selectedMonth);
 
   const handleAttedanceCapture = async (event, dayInMonth, player) => {
+    console.log(player.rosterId)
     const payload = {
         day: dayInMonth + 1, 
         month: selectedMonth,
@@ -34,6 +35,13 @@ export const AttendanceTable = ({ roster, attendance }) => {
         present: event.target.checked
     }
     const attedanceUpdate = await updateAttendanceRecord(payload)
+    console.log(attedanceUpdate)
+  }
+
+  const shouldCheck = (index, dayInMonth) => {
+    const currentRecord = attendance[index]
+    const presentOrNot = currentRecord?.attendanceRecord.find(a => a.day === dayInMonth + 1 && a.month === selectedMonth)
+    return presentOrNot?.present
   }
 
   return (
@@ -74,7 +82,7 @@ export const AttendanceTable = ({ roster, attendance }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {roster.map((player) => (
+            {roster.map((player, index) => (
               <TableRow key={player.rosterId}>
                 <TableCell key={player.rosterId}>{player.first_name} {player.last_name}</TableCell>
                 {/* Generate a checkbox for each day of the selected month */}
@@ -82,6 +90,7 @@ export const AttendanceTable = ({ roster, attendance }) => {
                 <TableCell key={i} align='center'>
                   <Checkbox
                     onChange={(event) => handleAttedanceCapture(event, i, player)}
+                    defaultChecked={shouldCheck(index, i)}
                   />
                 </TableCell>
               ))}

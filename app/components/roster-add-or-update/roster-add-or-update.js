@@ -16,7 +16,10 @@ export const RosterAddorUpdate = ({handleClose, updatedPlayer, handleUpdate, set
         
         const response = await createPlayer(player).then(async resp => {
           const attendanceRecord = generateWorkingDaysForYear(resp.player.body.rosterId)
-          await createAttedanceRecord({attendanceRecord})
+          await createAttedanceRecord({
+            rosterId: resp.player.body.rosterId,
+            attendanceRecord: attendanceRecord
+          })
         })
         if (!handleClose) () => { 
             setResp(response)
