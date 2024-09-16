@@ -5,16 +5,19 @@ import { BasicTable } from '../components/table/table'
 import { AttendanceTable } from './_components/attendanceTable'
 import './styles/style.css'
 import { GET } from '../api/roster/route'
+import { GET as attendanceGet } from '../api/attendance/route'
 
 export const revalidate = 2
 //TODO: when refreshing after deleting, doesn't give correct roster amount
 export default async function Page() {
     // TODO: Error handling
-    let data = await GET()
-    let roster = await data.json()
+    let rosterData = await GET()
+    let roster = await rosterData.json()
+    let rosterAttendance = await attendanceGet() 
+    let attendance = await rosterAttendance.json()
 
 
     return <div className='attendance-container'>
-        <AttendanceTable roster ={roster} />
+        <AttendanceTable roster ={roster} attendance={attendance} />
     </div>
 }

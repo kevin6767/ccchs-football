@@ -3,7 +3,7 @@ import { TextField, Box, Button } from '@mui/material'
 import './styles/styles.css'
 import { useEffect, useState } from 'react'
 import { createPlayer } from '@/app/actions/roster-actions/roster-add/roster-add'
-import { createAttedanceRecord } from '@/app/actions/attendance-actions/attedance-add'
+import { createAttedanceRecord } from '@/app/actions/attendance-actions/attedance-add/attedance-add'
 import { generateWorkingDaysForYear } from '@/app/utils/generateWorkingDaysForYear'
 
 export const RosterAddorUpdate = ({handleClose, updatedPlayer, handleUpdate, setUpdatedPlayer, handleUpdateSubmit, update}) => {
