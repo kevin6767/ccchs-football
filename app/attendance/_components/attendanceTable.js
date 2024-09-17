@@ -10,10 +10,12 @@ import Paper from '@mui/material/Paper';
 import { Checkbox, Select, MenuItem, Button, Tooltip } from '@mui/material';
 import { updateAttendanceRecord } from '@/app/actions/attendance-actions/attendance-update/attendance-update';
 
+
+
 export const AttendanceTable = ({ roster, attendance }) => {
   const [selectedMonth, setSelectedMonth] = useState(0); // 0 is January by default
   const [attendanceState, setAttendanceState] = useState({}); // State to hold attendance
-  
+
   // Function to calculate the number of days in a month (accounts for leap years)
   const getWorkingDaysInMonth = (month) => {
     const year = new Date().getFullYear();
@@ -142,7 +144,13 @@ export const AttendanceTable = ({ roster, attendance }) => {
           <TableBody>
             {roster.map((player, index) => (
               <TableRow key={player.rosterId}>
-                <TableCell>{player.first_name} {player.last_name}</TableCell>
+                <TableCell sx={{
+                      position: "sticky",
+                      left: 0,
+                      backgroundColor: "grey",
+                      color: 'white',
+                      zIndex: 15,
+                }}>{player.first_name} {player.last_name}</TableCell>
                 {/* Generate a checkbox for each day of the selected month */}
                 {Array.from({ length: daysInMonth }, (_, i) => {
                   const date = new Date(new Date().getFullYear(), selectedMonth, i + 1);
