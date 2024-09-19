@@ -19,7 +19,7 @@ const style = {
     p: 4,
 }
 
-export const TransitionsModal = ({
+export const RosterActionsModal = ({
     open,
     handleClose,
     updatedPlayer,

@@ -10,12 +10,12 @@ import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { Button, Box, TableSortLabel } from '@mui/material'
 import { useState } from 'react'
-import { TransitionsModal } from '../modal/modal'
+import { RosterActionsModal } from '../roster-actions-modal/roster-actions-modal'
 import { deletePlayer } from '@/app/actions/roster-actions/roster-delete/roster-delete'
 import { updatePlayer } from '@/app/actions/roster-actions/roster-update/roster-update'
 import { deleteAttendanceRecord } from '@/app/actions/attendance-actions/attendance-delete/attendance-delete'
 
-export const BasicTable = ({ row }) => {
+export const RosterTable = ({ row }) => {
     const [updatedPlayer, setUpdatedPlayer] = useState(undefined)
     const [update, setUpdateMode] = useState(false)
     const [open, setOpen] = useState(false)
@@ -116,7 +116,7 @@ export const BasicTable = ({ row }) => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <TransitionsModal
+            <RosterActionsModal
                 update={update}
                 handleUpdateSubmit={handleUpdateSubmit}
                 setUpdatedPlayer={setUpdatedPlayer}

@@ -34,14 +34,28 @@ export const RosterAddorUpdate = ({
 
         const updateOrCreatedPlayer = update ? updatedPlayer : player
 
+        // Check if first_name and last_name contain only alphabetic characters
+        const nameRegex = /^[A-Za-z\s]+$/
+
+        if (!nameRegex.test(updateOrCreatedPlayer.first_name)) {
+            newErrors.first_name =
+                'First name should only contain letters and spaces.'
+        }
+
+        if (!nameRegex.test(updateOrCreatedPlayer.last_name)) {
+            newErrors.last_name =
+                'Last name should only contain letters and spaces.'
+        }
+
         // Check for duplicate first_name + last_name
         const duplicateName = roster.find(
             (p) =>
                 p.first_name === updateOrCreatedPlayer.first_name &&
                 p.last_name === updateOrCreatedPlayer.last_name,
         )
-        if (duplicateName)
+        if (duplicateName) {
             newErrors.name = 'This name already exists in the roster.'
+        }
 
         // Check for duplicate number
         if (
@@ -151,8 +165,10 @@ export const RosterAddorUpdate = ({
                         id="outlined-required"
                         label="First Name"
                         name="first_name"
-                        error={!!errors.name} // Set error state
-                        helperText={errors.name} // Display error message
+                        error={!!errors.name || !!errors.first_name} // Set error state
+                        helperText={
+                            !errors.first_name ? errors.name : errors.first_name
+                        } // Display error message
                         defaultValue={updatedPlayer?.first_name || ''}
                         onChange={handleOnChange}
                     />
@@ -161,8 +177,10 @@ export const RosterAddorUpdate = ({
                         id="outlined-required"
                         label="Last Name"
                         name="last_name"
-                        error={!!errors.name}
-                        helperText={errors.name}
+                        error={!!errors.name || !!errors.last_name}
+                        helperText={
+                            !errors.last_name ? errors.name : errors.last_name
+                        }
                         defaultValue={updatedPlayer?.last_name || ''}
                         onChange={handleOnChange}
                     />

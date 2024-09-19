@@ -1,8 +1,11 @@
-import { RosterAdd } from '../components/roster-add-or-update/roster-add-or-update'
+import { RosterAdd } from './_components/roster-add-or-update/roster-add-or-update'
 import { TextField, Box, Button } from '@mui/material'
 import './styles/style.css'
 import { revalidatePath } from 'next/cache'
-import { BasicTable } from '../components/table/table'
+import {
+    BasicTable,
+    RosterTable,
+} from './_components/roster-table/roster-table'
 import { GET } from '../api/roster/route'
 
 export const revalidate = 2
@@ -15,7 +18,7 @@ export default async function Page() {
     return (
         <div className="dashboard-container">
             <Box component="div" className="dashboard-box-container">
-                <BasicTable row={roster} />
+                <RosterTable row={roster} />
             </Box>
         </div>
     )

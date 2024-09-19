@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import styles from './page.module.css'
-import { RosterActions } from './components/roster-add-or-update/roster-add-or-update'
+import { RosterActions } from './dashboard/_components/roster-add-or-update/roster-add-or-update'
 import Link from 'next/link'
 import { Navbar } from './components/navbar/navbar'
 
