@@ -17,7 +17,8 @@ export async function deletePlayer(player) {
         })
         const rep = await response.json()
         revalidatePath('/roster')
-        return {status: 200, message: 'Sucessfully updated roster!'}
+        eventLogger.logEvent({message: 'Successfully deleted player'})
+        return {status: 200, message: 'Sucessfully deleted player!'}
     } catch (error) {
         redirect('/dashboard')
     }

@@ -22,6 +22,7 @@ export async function createPlayer(player) {
         })
         const rep = await response.json()
         revalidatePath('/roster')
+        eventLogger.logEvent({message: 'Successfully created player'})
         return {status: 200, message: 'Sucessfully updated roster!', player: rep}
     } catch (error) {
         redirect('/dashboard')

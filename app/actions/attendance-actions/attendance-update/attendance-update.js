@@ -17,6 +17,7 @@ export async function updateAttendanceRecord(player) {
         })
         const rep = await response.json()
         revalidatePath('/attendance')
+        eventLogger.logEvent({message: 'Successfully updated attendance record'})
         return {status: rep.status, message: 'Sucessfully updated attedance record!'}
     } catch (error) {
         redirect('/dashboard')

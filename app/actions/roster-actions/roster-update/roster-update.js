@@ -16,8 +16,9 @@ export async function updatePlayer(player) {
         })
         const rep = await response.json()
         revalidatePath('/roster')
-        return {status: 200, message: 'Sucessfully updated roster!'}
+        eventLogger.logEvent({message: 'Successfully updated player'})
+        return {status: 200, message: 'Sucessfully updated player!'}
     } catch (error) {
-        return {status: 500, message: 'Failed updated roster!'}
+        return {status: 500, message: 'Failed updated player!'}
     }
 }

@@ -17,6 +17,7 @@ export async function deleteAttendanceRecord(player) {
         })
         const rep = await response.json()
         revalidatePath('/attendance')
+        eventLogger.logEvent({message: 'Successfully updated attendance'})
         return {status: 200, message: 'Sucessfully updated attendance!'}
     } catch (error) {
         redirect('/dashboard')

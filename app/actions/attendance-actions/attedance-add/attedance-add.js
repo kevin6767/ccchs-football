@@ -17,7 +17,8 @@ export async function createAttedanceRecord(player) {
         })
         const rep = await response.json()
         revalidatePath('/attendance')
-        return {status: 200, message: 'Sucessfully updated attedance!'}
+        eventLogger.logEvent({message: 'Successfully created attendance record'})
+        return {status: 200, message: 'Sucessfully created attendance record!'}
     } catch (error) {
         redirect('/dashboard')
     }
