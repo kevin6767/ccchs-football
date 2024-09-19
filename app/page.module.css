@@ -1,7 +1,6 @@
 .page {
-
     display: grid;
-    grid-template-rows: 10px .8fr 10px;
+    grid-template-rows: 10px 0.8fr 10px;
     align-items: center;
     justify-items: center;
     min-height: 100svh;

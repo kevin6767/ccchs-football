@@ -1,96 +1,175 @@
 'use client'
-import { TextField, Box } from '@mui/material'
-import {LoadingButton} from '@mui/lab'
-import './styles/styles.css'
+import { TextField, Box, MenuItem } from '@mui/material'
+import { LoadingButton } from '@mui/lab'
 import { useEffect, useState } from 'react'
 import { createPlayer } from '@/app/actions/roster-actions/roster-add/roster-add'
 import { createAttedanceRecord } from '@/app/actions/attendance-actions/attedance-add/attedance-add'
 import { generateWorkingDaysForYear } from '@/app/utils/generateWorkingDaysForYear'
 
-export const RosterAddorUpdate = ({handleClose, updatedPlayer, handleUpdate, setUpdatedPlayer, handleUpdateSubmit, update}) => {
+const positions = [
+    'Quarterback',
+    'Running Back',
+    'Wide Receiver',
+    'Linebacker',
+    'Offensive Lineman',
+] // Example list
+
+export const RosterAddorUpdate = ({
+    handleClose,
+    updatedPlayer,
+    handleUpdate,
+    setUpdatedPlayer,
+    handleUpdateSubmit,
+    update,
+    roster,
+}) => {
     const [player, setPlayer] = useState({})
     const [isLoading, setIsLoading] = useState(false)
+    const [errors, setErrors] = useState({}) // Error state to track field errors
     const [resp, setResp] = useState()
-  
+
+    // Validation function
+    const validate = () => {
+        const newErrors = {}
+
+        // Check for duplicate first_name + last_name
+        const duplicateName = roster.find(
+            (p) =>
+                p.first_name === player.first_name &&
+                p.last_name === player.last_name,
+        )
+        if (duplicateName)
+            newErrors.name = 'This name already exists in the roster.'
+
+        // Check for duplicate number
+        if (player.number < 1 || player.number > 99) {
+            newErrors.number = 'Number must be between 1 and 99.'
+        } else if (roster.find((p) => p.number === player.number)) {
+            newErrors.number = 'This number is already taken.'
+        }
+
+        // Position-based number validation
+        if (player.position) {
+            if (
+                ['Quarterback', 'Running Back'].includes(player.position) &&
+                player.number > 49
+            ) {
+                newErrors.number = 'Skill positions can only have numbers 1-49.'
+            } else if (
+                ['Offensive Lineman'].includes(player.position) &&
+                (player.number < 50 || player.number > 99)
+            ) {
+                newErrors.number = 'Lineman must have numbers 50-99.'
+            }
+        }
+
+        return newErrors
+    }
 
     const handleOnSubmit = async (e) => {
-      setIsLoading(true)
         e.preventDefault()
-        
-        const response = await createPlayer(player).then(async resp => {
-          const attendanceRecord = generateWorkingDaysForYear(resp.player.body.rosterId)
-          await createAttedanceRecord({
-            rosterId: resp.player.body.rosterId,
-            attendanceRecord: attendanceRecord
-          })
-        })
-        if (!handleClose) () => { 
-            setResp(response)
+
+        const newErrors = validate()
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors) // Set errors if any
             return
         }
+
+        setIsLoading(true)
+
+        const response = await createPlayer(player).then(async (resp) => {
+            const attendanceRecord = generateWorkingDaysForYear(
+                resp.player.body.rosterId,
+            )
+            await createAttedanceRecord({
+                rosterId: resp.player.body.rosterId,
+                attendanceRecord: attendanceRecord,
+            })
+        })
+
         setIsLoading(false)
         handleClose()
-        return 
+        return
     }
 
     const handleOnChange = (e) => {
-        const {name, value} = e.target
+        const { name, value } = e.target
 
-        !update ? setPlayer({
+        setPlayer({
             ...player,
-            [name]: value
-        }) : setUpdatedPlayer({
-          ...updatedPlayer,
-          [name]: value
-      })
+            [name]: value,
+        })
+
+        // Reset the error for the field that's being edited
+        setErrors({
+            ...errors,
+            [name]: '',
+        })
     }
 
-    return <Box 
-        component='div'
-        noValidate
-        sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }}
-        className='form-container'>
-        {!resp ? <form onSubmit={!update ? handleOnSubmit : handleUpdateSubmit}>
-        <Box component='div'>
-        <TextField
-          required
-          id="outlined-required"
-          label="First Name"
-          name="first_name"
-          defaultValue={updatedPlayer?.first_name ||''}
-          onChange={handleOnChange}
-        />
-        <TextField
-          required
-          id="outlined-required"
-          label="last Name"
-          defaultValue={updatedPlayer?.last_name || ''}
-          onChange={handleOnChange}
-            name="last_name"
-        />
-        <TextField
-          required
-          id="outlined-required"
-          label="Number"
-          name="number"
-          type="number"
-          defaultValue={updatedPlayer?.number || ''}
-          onChange={handleOnChange}
-        />
-        <TextField
-          required
-          id="outlined-required"
-          label="Position"
-          name="position"
-          defaultValue={updatedPlayer?.position || ''}
-          onChange={handleOnChange}
-        />
-        <LoadingButton type="submit" loading={isLoading}>
-            {update ? 'Update' : 'Submit'}
-        </LoadingButton>
+    return (
+        <Box
+            component="div"
+            noValidate
+            sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }}
+            className="form-container"
+        >
+            <form onSubmit={handleOnSubmit}>
+                <Box component="div">
+                    <TextField
+                        required
+                        id="outlined-required"
+                        label="First Name"
+                        name="first_name"
+                        error={!!errors.name} // Set error state
+                        helperText={errors.name} // Display error message
+                        defaultValue={updatedPlayer?.first_name || ''}
+                        onChange={handleOnChange}
+                    />
+                    <TextField
+                        required
+                        id="outlined-required"
+                        label="Last Name"
+                        name="last_name"
+                        error={!!errors.name}
+                        helperText={errors.name}
+                        defaultValue={updatedPlayer?.last_name || ''}
+                        onChange={handleOnChange}
+                    />
+                    <TextField
+                        required
+                        id="outlined-required"
+                        label="Number"
+                        name="number"
+                        type="number"
+                        error={!!errors.number} // Set error state
+                        helperText={errors.number} // Display error message
+                        autoComplete="off"
+                        defaultValue={updatedPlayer?.number || ''}
+                        onChange={handleOnChange}
+                    />
+                    <TextField
+                        required
+                        id="outlined-required"
+                        select
+                        label="Position"
+                        name="position"
+                        error={!!errors.position} // Set error state if needed
+                        helperText={errors.position} // Display error message if needed
+                        defaultValue={updatedPlayer?.position || ''}
+                        onChange={handleOnChange}
+                    >
+                        {positions.map((position) => (
+                            <MenuItem key={position} value={position}>
+                                {position}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <LoadingButton type="submit" loading={isLoading}>
+                        {update ? 'Update' : 'Submit'}
+                    </LoadingButton>
+                </Box>
+            </form>
         </Box>
-        </form> : resp.message}
-
-        </Box>
-    
+    )
 }

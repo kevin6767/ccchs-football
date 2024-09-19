@@ -1,6 +1,6 @@
 import { RosterAdd } from '../components/roster-add-or-update/roster-add-or-update'
 import { TextField, Box, Button } from '@mui/material'
-import { revalidatePath } from "next/cache"
+import { revalidatePath } from 'next/cache'
 import { BasicTable } from '../components/table/table'
 import { AttendanceTable } from './_components/attendanceTable'
 import './styles/style.css'
@@ -13,13 +13,14 @@ export default async function Page() {
     // TODO: Error handling
     let rosterData = await GET()
     let roster = await rosterData.json()
-    let rosterAttendance = await attendanceGet() 
+    let rosterAttendance = await attendanceGet()
     let attendance = await rosterAttendance.json()
 
-
-    return <div className='attendance-container'>
-        <Box className='attendance-box-container'>
-        <AttendanceTable roster ={roster} attendance={attendance} />
-        </Box>
-    </div>
+    return (
+        <div className="attendance-container">
+            <Box className="attendance-box-container">
+                <AttendanceTable roster={roster} attendance={attendance} />
+            </Box>
+        </div>
+    )
 }
