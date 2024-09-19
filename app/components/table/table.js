@@ -39,8 +39,7 @@ export const BasicTable = ({ row }) => {
         setUpdateMode(true)
     }
 
-    const handleUpdateSubmit = async (e) => {
-        e.preventDefault()
+    const handleUpdateSubmit = async () => {
         const updateResp = await updatePlayer(updatedPlayer)
         handleClose()
         setUpdatedPlayer(undefined)
@@ -89,7 +88,6 @@ export const BasicTable = ({ row }) => {
                     <TableBody>
                         {row.map((row) => (
                             <TableRow key={row.rosterId}>
-                                {console.log(row)}
                                 <TableCell>{row.first_name}</TableCell>
                                 <TableCell>{row.last_name}</TableCell>
                                 <TableCell>{row.number}</TableCell>

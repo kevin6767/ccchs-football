@@ -32,38 +32,63 @@ export const RosterAddorUpdate = ({
     const validate = () => {
         const newErrors = {}
 
+        const updateOrCreatedPlayer = update ? updatedPlayer : player
+
         // Check for duplicate first_name + last_name
         const duplicateName = roster.find(
             (p) =>
-                p.first_name === player.first_name &&
-                p.last_name === player.last_name,
+                p.first_name === updateOrCreatedPlayer.first_name &&
+                p.last_name === updateOrCreatedPlayer.last_name,
         )
         if (duplicateName)
             newErrors.name = 'This name already exists in the roster.'
 
         // Check for duplicate number
-        if (player.number < 1 || player.number > 99) {
+        if (
+            updateOrCreatedPlayer.number < 1 ||
+            updateOrCreatedPlayer.number > 99
+        ) {
             newErrors.number = 'Number must be between 1 and 99.'
-        } else if (roster.find((p) => p.number === player.number)) {
+        } else if (
+            roster.find((p) => p.number === updateOrCreatedPlayer.number)
+        ) {
             newErrors.number = 'This number is already taken.'
         }
 
         // Position-based number validation
-        if (player.position) {
+        if (updateOrCreatedPlayer.position) {
             if (
-                ['Quarterback', 'Running Back'].includes(player.position) &&
-                player.number > 49
+                ['Quarterback', 'Running Back'].includes(
+                    updateOrCreatedPlayer.position,
+                ) &&
+                updateOrCreatedPlayer.number > 49
             ) {
                 newErrors.number = 'Skill positions can only have numbers 1-49.'
             } else if (
-                ['Offensive Lineman'].includes(player.position) &&
-                (player.number < 50 || player.number > 99)
+                ['Offensive Lineman'].includes(
+                    updateOrCreatedPlayer.position,
+                ) &&
+                (updateOrCreatedPlayer.number < 50 ||
+                    updateOrCreatedPlayer.number > 99)
             ) {
                 newErrors.number = 'Lineman must have numbers 50-99.'
             }
         }
 
         return newErrors
+    }
+
+    const beforeHandleUpdate = async (e) => {
+        e.preventDefault()
+        const newErrors = validate()
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors) // Set errors if any
+            return
+        } else {
+            setIsLoading(true)
+            await handleUpdateSubmit()
+            setIsLoading(false)
+        }
     }
 
     const handleOnSubmit = async (e) => {
@@ -95,10 +120,15 @@ export const RosterAddorUpdate = ({
     const handleOnChange = (e) => {
         const { name, value } = e.target
 
-        setPlayer({
-            ...player,
-            [name]: value,
-        })
+        !update
+            ? setPlayer({
+                  ...player,
+                  [name]: value,
+              })
+            : setUpdatedPlayer({
+                  ...updatedPlayer,
+                  [name]: value,
+              })
 
         // Reset the error for the field that's being edited
         setErrors({
@@ -114,7 +144,7 @@ export const RosterAddorUpdate = ({
             sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' } }}
             className="form-container"
         >
-            <form onSubmit={handleOnSubmit}>
+            <form onSubmit={update ? beforeHandleUpdate : handleOnSubmit}>
                 <Box component="div">
                     <TextField
                         required
