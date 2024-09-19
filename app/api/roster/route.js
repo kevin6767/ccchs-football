@@ -21,7 +21,7 @@ export async function POST(request){
 export async function  DELETE (request) {
   const client = await connect
   const body = await request.json()
-  await client.db("ccchs-cubs").collection("roster").deleteOne(body._id)
+  await client.db("ccchs-cubs").collection("roster").deleteOne({rosterId: body})
   return Response.json({message: "successfully updated the document"})
 }
 

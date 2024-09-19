@@ -16,7 +16,7 @@ import { updatePlayer } from '@/app/actions/roster-actions/roster-update/roster-
 import { deleteAttendanceRecord } from '@/app/actions/attendance-actions/attendance-delete/attendance-delete';
 
 
-export const BasicTable = (rows) => {
+export const BasicTable = ({row}) => {
   const [updatedPlayer, setUpdatedPlayer] = useState(undefined)
   const [update, setUpdateMode] = useState(false)
   const [open, setOpen] = useState(false)
@@ -29,11 +29,12 @@ export const BasicTable = (rows) => {
   const handleClose = () => setOpen(false);
 
 
-  const handleDelete = async (row) => {
+  const handleDelete = async (id) => {
     // TODO: do error handling
-    const deleteResp = await deletePlayer(row.rosterId)
+    console.log(id)
+    const deleteResp = await deletePlayer(id)
     console.log(deleteResp)
-    const deleteAttendance = await deleteAttendanceRecord(row.rosterId)
+    const deleteAttendance = await deleteAttendanceRecord(id)
   }
 
   const handleUpdate = async (row) => {
@@ -51,7 +52,6 @@ export const BasicTable = (rows) => {
     setUpdatedPlayer(undefined)
   }
   
-
   return (
     <>
     <TableContainer component={Paper} elevation={5}>
@@ -115,9 +115,10 @@ export const BasicTable = (rows) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.row.map((row) => (
-            <TableRow key={row.rosterId} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell component="th" scope="row">
+          {row.map((row) => (
+            <TableRow key={row.rosterId}>
+              {console.log(row)}
+              <TableCell>
                 {row.first_name}
               </TableCell>
               <TableCell>{row.last_name}</TableCell>
@@ -128,7 +129,7 @@ export const BasicTable = (rows) => {
               <TableCell>{row.powerclean_max}</TableCell>
               <TableCell>{row.deadlift_max}</TableCell>
               <TableCell>{row.weight}</TableCell>
-              <TableCell><Button onClick={() => handleDelete(row)}>Delete</Button></TableCell>
+              <TableCell><Button onClick={() => handleDelete(row.rosterId)}>Delete</Button></TableCell>
               <TableCell><Button onClick={() => handleUpdate(row)}>Update</Button></TableCell>
             </TableRow>
           ))}
