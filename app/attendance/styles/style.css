@@ -3,3 +3,7 @@
     justify-content: center;
     color: black;
 }
+
+.attendance-box-container {
+    height: 50svh;
+}

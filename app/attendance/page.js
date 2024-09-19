@@ -18,6 +18,8 @@ export default async function Page() {
 
 
     return <div className='attendance-container'>
+        <Box className='attendance-box-container'>
         <AttendanceTable roster ={roster} attendance={attendance} />
+        </Box>
     </div>
 }

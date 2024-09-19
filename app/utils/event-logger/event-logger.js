@@ -1,4 +1,4 @@
-const eventLogger = (() => {
+export const eventLogger = (() => {
     let eventQue = []
 
     setInterval(() => {
@@ -13,4 +13,4 @@ const eventLogger = (() => {
             eventQue.push(e)
         }
     }
-})
+})()

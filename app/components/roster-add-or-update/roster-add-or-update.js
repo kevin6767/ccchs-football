@@ -1,5 +1,6 @@
 'use client'
-import { TextField, Box, Button } from '@mui/material'
+import { TextField, Box } from '@mui/material'
+import {LoadingButton} from '@mui/lab'
 import './styles/styles.css'
 import { useEffect, useState } from 'react'
 import { createPlayer } from '@/app/actions/roster-actions/roster-add/roster-add'
@@ -8,10 +9,12 @@ import { generateWorkingDaysForYear } from '@/app/utils/generateWorkingDaysForYe
 
 export const RosterAddorUpdate = ({handleClose, updatedPlayer, handleUpdate, setUpdatedPlayer, handleUpdateSubmit, update}) => {
     const [player, setPlayer] = useState({})
+    const [isLoading, setIsLoading] = useState(false)
     const [resp, setResp] = useState()
   
 
     const handleOnSubmit = async (e) => {
+      setIsLoading(true)
         e.preventDefault()
         
         const response = await createPlayer(player).then(async resp => {
@@ -25,6 +28,7 @@ export const RosterAddorUpdate = ({handleClose, updatedPlayer, handleUpdate, set
             setResp(response)
             return
         }
+        setIsLoading(false)
         handleClose()
         return 
     }
@@ -81,9 +85,9 @@ export const RosterAddorUpdate = ({handleClose, updatedPlayer, handleUpdate, set
           defaultValue={updatedPlayer?.position || ''}
           onChange={handleOnChange}
         />
-        <Button type="submit">
+        <LoadingButton type="submit" loading={isLoading}>
             {update ? 'Update' : 'Submit'}
-        </Button>
+        </LoadingButton>
         </Box>
         </form> : resp.message}
 

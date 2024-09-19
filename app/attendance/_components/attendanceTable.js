@@ -111,7 +111,7 @@ export const AttendanceTable = ({ roster, attendance }) => {
   return (
     <>
       {/* Dropdown for selecting the month */}
-      <TableContainer component={Paper} elevation={5} sx={{ width: '100%', maxWidth: '1400px' }}>
+      <TableContainer component={Paper} elevation={5} sx={{ width: '100%', minWidth: '1300px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Select value={selectedMonth} onChange={handleMonthChange} sx={{ margin: '10px' }}>
             <MenuItem value={0}>January</MenuItem>
