@@ -16,39 +16,11 @@ import { updatePlayer } from '@/app/actions/roster-actions/roster-update/roster-
 import { deleteAttendanceRecord } from '@/app/actions/attendance-actions/attendance-delete/attendance-delete';
 
 
-// Comparator function for sorting
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// function stableSort(array, comparator) {
-//   const stabilizedThis = array.map((el, index) => [el, index]);
-//   stabilizedThis.sort((a, b) => {
-//     const order = comparator(a[0], b[0]);
-//     if (order !== 0) return order;
-//     return a[1] - b[1];
-//   });
-//   return stabilizedThis.map((el) => el[0]);
-// }
-
 export const BasicTable = (rows) => {
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('first_name');
   const [updatedPlayer, setUpdatedPlayer] = useState(undefined)
   const [update, setUpdateMode] = useState(false)
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false)
+
   const handleOpen = () => {
     setOpen(true)
     setUpdatedPlayer(undefined)
@@ -56,11 +28,6 @@ export const BasicTable = (rows) => {
 };
   const handleClose = () => setOpen(false);
 
-  const handleRequestSort = (property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
 
   const handleDelete = async (row) => {
     // TODO: do error handling
@@ -96,27 +63,18 @@ export const BasicTable = (rows) => {
           <TableRow>
             <TableCell>
               <TableSortLabel
-                active={orderBy === 'first_name'}
-                direction={orderBy === 'first_name' ? order : 'asc'}
-                onClick={() => handleRequestSort('first_name')}
               >
                 First Name
               </TableSortLabel>
             </TableCell>
             <TableCell>
               <TableSortLabel
-                active={orderBy === 'last_name'}
-                direction={orderBy === 'last_name' ? order : 'asc'}
-                onClick={() => handleRequestSort('last_name')}
               >
                 Last Name
               </TableSortLabel>
             </TableCell>
             <TableCell>
               <TableSortLabel
-                active={orderBy === 'number'}
-                direction={orderBy === 'number' ? order : 'asc'}
-                onClick={() => handleRequestSort('number')}
               >
                 Number
               </TableSortLabel>
@@ -124,45 +82,30 @@ export const BasicTable = (rows) => {
             <TableCell>Position</TableCell>
             <TableCell>
               <TableSortLabel
-                active={orderBy === 'squat_max'}
-                direction={orderBy === 'squat_max' ? order : 'asc'}
-                onClick={() => handleRequestSort('squat_max')}
               >
                 Squat
               </TableSortLabel>
             </TableCell>
             <TableCell>
               <TableSortLabel
-                active={orderBy === 'bench_max'}
-                direction={orderBy === 'bench_max' ? order : 'asc'}
-                onClick={() => handleRequestSort('bench_max')}
               >
                 Bench
               </TableSortLabel>
             </TableCell>
             <TableCell>
               <TableSortLabel
-                active={orderBy === 'powerclean_max'}
-                direction={orderBy === 'powerclean_max' ? order : 'asc'}
-                onClick={() => handleRequestSort('powerclean_max')}
               >
                 Power Clean
               </TableSortLabel>
             </TableCell>
             <TableCell>
               <TableSortLabel
-                active={orderBy === 'deadlift_max'}
-                direction={orderBy === 'deadlift_max' ? order : 'asc'}
-                onClick={() => handleRequestSort('deadlift_max')}
               >
                 Deadlift
               </TableSortLabel>
             </TableCell>
             <TableCell>
               <TableSortLabel
-                active={orderBy === 'weight'}
-                direction={orderBy === 'weight' ? order : 'asc'}
-                onClick={() => handleRequestSort('weight')}
               >
                 Weight
               </TableSortLabel>
